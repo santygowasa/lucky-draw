@@ -56,26 +56,33 @@ button {
 <script>
 const URL_API = "https://script.google.com/macros/s/AKfycbxNZG7VS2YYtRh_EIXHHylDrXpauhnRbKm9XjQNDbd-NBvaq6m2V7SUr5MOVz9RKxCHrQ/exec";
 
+<script>
 function cekLuckyDraw() {
   const nama = document.getElementById("nama").value;
   const hasil = document.getElementById("hasil");
 
   if (!nama) {
-    hasil.innerHTML = "❗ Silakan pilih nama terlebih dahulu";
+    hasil.innerHTML = "❌ Silakan pilih nama";
     return;
   }
 
-  hasil.innerHTML = "⏳ Memproses undian...";
-
-  fetch(URL_API, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ nama: nama })
-  })
-  .then(res => res.json())
-  .then(data => {
-    hasil.innerHTML = data.result;
-  })
+  fetch("https://script.google.com/macros/s/AKfycbyyDIoyp4sdL2ZNzu8Ghbzlm7iqvhY8t-EPpXTwWSRvYcWl3OGHNopQilTN2_LZPvzhyA/exec?nama=" + encodeURIComponent(nama))
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) {
+        hasil.innerHTML = "❌ " + data.error;
+      } else if (data.menang) {
+        hasil.innerHTML = "🎉 Selamat " + data.nama + ", Anda MENANG Lucky Draw!";
+      } else {
+        hasil.innerHTML = "😢 Maaf " + data.nama + ", belum beruntung.";
+      }
+    })
+    .catch(err => {
+      hasil.innerHTML = "❌ Terjadi kesalahan. Coba lagi.";
+      console.error(err);
+    });
+}
+</script>
   .catch(() => {
     hasil.innerHTML = "❌ Terjadi kesalahan. Coba lagi.";
   });
@@ -85,3 +92,4 @@ function cekLuckyDraw() {
 </body>
 
 </html>
+
