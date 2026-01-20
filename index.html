@@ -66,16 +66,23 @@ function cekLuckyDraw() {
     return;
   }
 
-  fetch("https://script.google.com/macros/s/AKfycbyyDIoyp4sdL2ZNzu8Ghbzlm7iqvhY8t-EPpXTwWSRvYcWl3OGHNopQilTN2_LZPvzhyA/exec?nama=" + encodeURIComponent(nama))
-    .then(res => res.json())
+  fetch("https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbyyDIoyp4sdL2ZNzu8Ghbzlm7iqvhY8t-EPpXTwWSRvYcWl3OGHNopQilTN2_LZPvzhyA/exec/exec?nama=" + encodeURIComponent(nama))
+    .then(response => response.json())
     .then(data => {
       if (data.error) {
         hasil.innerHTML = "❌ " + data.error;
-      } else if (data.menang) {
+      } else if (data.menang === true) {
         hasil.innerHTML = "🎉 Selamat " + data.nama + ", Anda MENANG Lucky Draw!";
       } else {
         hasil.innerHTML = "😢 Maaf " + data.nama + ", belum beruntung.";
       }
+    })
+    .catch(error => {
+      hasil.innerHTML = "❌ Terjadi kesalahan. Coba lagi.";
+      console.error(error);
+    });
+}
+</script>
     })
     .catch(err => {
       hasil.innerHTML = "❌ Terjadi kesalahan. Coba lagi.";
@@ -92,4 +99,5 @@ function cekLuckyDraw() {
 </body>
 
 </html>
+
 
