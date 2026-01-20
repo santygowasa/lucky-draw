@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Lucky Draw</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f2f2f2;
+  padding-top: 40px;
+}
+
+select, button {
+  padding: 12px;
+  font-size: 16px;
+  width: 260px;
+}
+
+button {
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+#hasil {
+  margin-top: 30px;
+  font-size: 22px;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎁 LUCKY DRAW 🎁</h1>
+<p>Silakan pilih nama Anda</p>
+
+<select id="nama">
+  <option value="">-- Pilih Nama --</option>
+
+  <!-- CONTOH, NANTI GANTI DENGAN 280 NAMA -->
+<option>Angky Mahyaruddin</option>
+<option>Wahyuti Firman Ashad</option>
+<option>Lina Edwin Sitindaon</option>
+<option>Yuyun Yudi Abdillah</option>
+<option>Santy Radovan Barker</option>
+</select>
+
+<br>
+
+<button onclick="cekLuckyDraw()">Cek Lucky Draw</button>
+
+<div id="hasil"></div>
+
+<script>
+const URL_API = "https://script.google.com/macros/s/AKfycbz9BPC8QF0NeWSKWK_cMbUSC5F210ZuxdokK_m9fn8wt3OXhXq0DmDDjg3XhlS7odofbw/exec";
+
+function cekLuckyDraw() {
+  const nama = document.getElementById("nama").value;
+  const hasil = document.getElementById("hasil");
+
+  if (!nama) {
+    hasil.innerHTML = "❗ Silakan pilih nama terlebih dahulu";
+    return;
+  }
+
+  hasil.innerHTML = "⏳ Memproses undian...";
+
+  fetch(URL_API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nama: nama })
+  })
+  .then(res => res.json())
+  .then(data => {
+    hasil.innerHTML = data.result;
+  })
+  .catch(() => {
+    hasil.innerHTML = "❌ Terjadi kesalahan. Coba lagi.";
+  });
+}
+</script>
+
+</body>
+</html>
